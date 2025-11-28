@@ -121,8 +121,20 @@ namespace server
         // Hàm xử lý kết nối chính (button1_Click) (Đã có trong file gốc)
         private void button1_Click(object sender, EventArgs e)
         {
+            IPEndPoint ip = new IPEndPoint(IPAddress.Any, 5656);
+            Program.server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Program.server.Bind(ip);
+            Program.server.Listen(100);
+
+            Program.client = Program.server.Accept();
+            Program.ns = new NetworkStream(Program.client);
+            Program.nr = new StreamReader(Program.ns);
+            Program.nw = new StreamWriter(Program.ns);
+
             // Logic khởi tạo Socket, Bind, Listen, Accept và Stream
             // (Giả định Program.server, Program.client, Program.nw, Program.nr đã được thiết lập)
+            lblStatus.Text = "Trạng thái: Đang mở";
+            lblStatus.ForeColor = Color.Green;
 
             String? s = "";
             while (true)
